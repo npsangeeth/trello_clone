@@ -1,27 +1,12 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+
 import Column from "../columns/Column";
 import BoardHeader from "./components/Header";
 
-const cardDataByColumn = [
-  [
-    { id: 1, title: 'Task 1', description: 'Plan the sprint backlog' },
-    { id: 2, title: 'Task 2', description: 'Review UI updates' },
-  ],
-  [
-    { id: 3, title: 'Task 3', description: 'Fix navigation issue' },
-    { id: 4, title: 'Task 4', description: 'Handle API response' },
-    { id: 5, title: 'Task 5', description: 'Write test cases' },
-    { id: 6, title: 'Task 6', description: 'Polish empty states' },
-  ],
-  [
-    { id: 7, title: 'Task 7', description: 'Prepare release notes' },
-  ],
-  [
-    
-  ]
-];
+import  projectData  from "../../shared/project_data/projectData";
 
 const Board = () => {
+
   return (
     <>
       <BoardHeader />
@@ -35,9 +20,26 @@ const Board = () => {
           p: 1,
         }}
       >
-        {cardDataByColumn.map((cards, index) => (
-          <Column key={index + 1} title={`Column ${index + 1}`} cards={cards} />
+        {projectData.columns.map((column) => (
+          <Column key={column.column_id} title={column.column_title} tasks={column.tasks} />
         ))}
+        <Button
+          sx={{
+            width: 280,
+            textTransform: 'none',
+            borderRadius: 2,
+            boxShadow: '0px 2px 8px rgba(9, 30, 66, 0.15)',
+            backgroundColor: '#f4f5f7',
+            margin: 1,
+            color: '#000000',
+            fontWeight: 'bold',
+            ":hover":{
+              backgroundColor: '#fbd5d5',
+            }
+          }}
+        >
+          Add Another List
+        </Button>
       </Box>
     </>
   );

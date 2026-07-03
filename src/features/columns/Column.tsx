@@ -1,18 +1,30 @@
+import { useState } from 'react';
 import { Card, CardActions, CardHeader, Button, Box, Typography } from '@mui/material';
 import TaskCard from './components/TaskCard';
+import AddCard from './components/AddCard';
+
+type SubTask = {
+  sub_task_id: number;
+  sub_task_title: string;
+  sub_task_description: string;
+  sub_task_status: string;
+};
 
 type CardItem = {
-  id: number;
-  title: string;
-  description: string;
+  task_id: number;
+  task_title: string;
+  task_description: string;
+  sub_tasks: SubTask[];
 };
 
 type ColumnProps = {
   title: string;
-  cards?: CardItem[];
+  tasks?: CardItem[];
 };
 
-const Column = ({ title, cards = [] }: ColumnProps) => {
+
+const Column = ({ title, tasks = [] }: ColumnProps) => {
+  const [isAddingCard, setIsAddingCard] = useState(false);
   return (
     <Card
       sx={{
@@ -36,33 +48,39 @@ const Column = ({ title, cards = [] }: ColumnProps) => {
             borderRadius: 2,
             backgroundColor: '#ffffff',
             border: '1px solid #dfe1e6',
-            minHeight: cards.length ? 'auto' : 56,
+            minHeight: tasks.length ? 'auto' : 56,
           }}
         >
-          {cards.length > 0 ? (
-            cards.map((card) => (
-              <TaskCard key={card.id} description={card.description} />
+          {tasks.length > 0 ? (
+            tasks.map((task) => (
+              <TaskCard key={task.task_id} description={task.task_description} />
             ))
           ) : (
             <Typography variant="body2" sx={{ color: '#5e6c84' }}>
-              No cards yet
+              No tasks yet
             </Typography>
           )}
+          { isAddingCard && <AddCard setIsAddingCard={setIsAddingCard}/>}
+
         </Box>
       </Box>
 
-      <CardActions>
-        <Button
-          sx={{
-            width: '100%',
-            borderRadius: 2,
-            textTransform: 'none',
-          }}
-          variant="contained"
-        >
-          Add Card
-        </Button>
-      </CardActions>
+    
+      { !isAddingCard && 
+        <CardActions>
+          <Button
+            sx={{
+              width: '100%',
+              borderRadius: 2,
+              textTransform: 'none',
+            }}
+            variant="contained"
+            onClick={() => setIsAddingCard(true)}
+          >
+            Add Card
+          </Button>
+        </CardActions>
+      }   
     </Card>
   );
 };
